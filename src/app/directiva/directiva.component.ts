@@ -8,5 +8,6 @@ export class DirectivaComponent {
 
   listaCurso: string[] = ['TypeScript', 'JavaScript', 'Java SE', 'C#', 'PHP'];
 
+  habilitar = true;
   constructor() { }
 }
