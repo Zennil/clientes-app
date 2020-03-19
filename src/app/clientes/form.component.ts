@@ -17,7 +17,7 @@ export class FormComponent implements OnInit {
   }
 
   create(): void {
-    console.log("Clicked");
+    console.log('Clicked');
     console.log(this.cliente);
   }
 
