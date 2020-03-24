@@ -30,8 +30,8 @@ export class ClienteService {
           // Cambiar fecha con uso de formatDate()
           // cliente.createAt = formatDate(cliente.createAt, 'dd-MM-yyyy', 'en-US');
 
-          const datePipe = new DatePipe('en-US');
-          cliente.createAt = datePipe.transform(cliente.createAt, 'dd/MM/yyy');
+          const datePipe = new DatePipe('es');
+          cliente.createAt = datePipe.transform(cliente.createAt, 'EEEE dd, MMMM yyyy');
 
           return cliente;
         });
