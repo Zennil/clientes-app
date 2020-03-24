@@ -25,13 +25,14 @@ export class ClienteService {
         const clientes = response as Cliente[];
 
         return clientes.map(cliente => {
+
           cliente.nombre = cliente.nombre.toUpperCase();
 
           // Cambiar fecha con uso de formatDate()
           // cliente.createAt = formatDate(cliente.createAt, 'dd-MM-yyyy', 'en-US');
 
-          const datePipe = new DatePipe('es');
-          cliente.createAt = datePipe.transform(cliente.createAt, 'EEEE dd, MMMM yyyy');
+          // const datePipe = new DatePipe('es');
+          // cliente.createAt = datePipe.transform(cliente.createAt, 'EEEE dd, MMMM yyyy');
 
           return cliente;
         });
