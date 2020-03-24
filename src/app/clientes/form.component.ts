@@ -14,6 +14,8 @@ export class FormComponent implements OnInit {
   private titulo = 'Crear cliente';
   private cliente: Cliente = new Cliente();
 
+  private errores: string[];
+
   constructor(private clienteService: ClienteService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -38,14 +40,24 @@ export class FormComponent implements OnInit {
     this.clienteService.create(this.cliente).subscribe(clienteNew => {
       this.router.navigate(['/clientes']);
       Swal.fire('Nuevo cliente', `Cliente ${clienteNew.nombre} creado con exito.`, 'success');
-    });
+    },
+      err => {
+        this.errores = err.error.errors as string[];
+        console.log('Codigo del error: ' + err.status);
+        console.log(this.errores);
+      });
   }
 
   update(): void {
     this.clienteService.update(this.cliente).subscribe(clienteUpd => {
       this.router.navigate(['/clientes']);
       Swal.fire('Cliente actualizado', `Cliente ${clienteUpd.nombre} actualizado con exito.`, 'success');
-    });
+    },
+      err => {
+        this.errores = err.error.errors as string[];
+        console.log('Codigo del error: ' + err.status);
+        console.log(err.error.errors);
+      });
   }
 
 }

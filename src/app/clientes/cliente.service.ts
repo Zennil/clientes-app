@@ -25,6 +25,11 @@ export class ClienteService {
     return this.http.post(this.urlEndPoint, cliente, { headers: this.httpHeaders }).pipe(
       map((respuesta: any) => respuesta.cliente as Cliente),
       catchError(e => {
+
+        if (e.status === 400) {
+          return throwError(e);
+        }
+
         console.log(e.error.error);
         Swal.fire(e.error.mensaje, e.error.error, 'error');
         return throwError(e);
@@ -46,6 +51,11 @@ export class ClienteService {
     return this.http.put(`${this.urlEndPoint}/${cliente.id}`, cliente, { headers: this.httpHeaders }).pipe(
       map((response: any) => response.cliente),
       catchError(e => {
+
+        if (e.status === 400) {
+          return throwError(e);
+        }
+
         console.log(e.error.error);
         Swal.fire(e.error.mensaje, e.error.error, 'error');
         return throwError(e);
