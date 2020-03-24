@@ -1,10 +1,19 @@
 <ul class="pagination" *ngIf="paginas.length > 0">
-    <li class="page-item" *ngFor="let pagina of paginas">
-        <a href="javascript:" class="page-link" *ngIf="pagina - 1 === paginador.number">
+
+    <li class="page-item" *ngIf="!paginador.first">
+        <a class="page-link" [routerLink]="['/clientes/page', paginador.number + -1]">&laquo;</a>
+    </li>
+
+    <li class="page-item" *ngFor="let pagina of paginas" [ngClass]="{'disabled': pagina - 1 === paginador.number}">
+        <span class="page-link" *ngIf="pagina - 1 === paginador.number">
             {{pagina}}
-        </a>
+        </span>
         <a *ngIf="pagina - 1 !== paginador.number" class="page-link" [routerLink]="['/clientes/page', pagina - 1]">
             {{pagina}}
         </a>
+    </li>
+
+    <li class="page-item" *ngIf="!paginador.last">
+        <a class="page-link" [routerLink]="['/clientes/page', paginador.number + 1]">&raquo;</a>
     </li>
 </ul>
