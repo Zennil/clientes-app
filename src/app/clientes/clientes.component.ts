@@ -12,25 +12,27 @@ import { ActivatedRoute } from '@angular/router';
 export class ClientesComponent implements OnInit {
 
   clientes: Cliente[];
-
+  paginador: any;
   constructor(private clienteService: ClienteService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(response => {
+    this.route.paramMap.subscribe(params => {
 
-      let page: number = +response.get('page');
+      let page: number = +params.get('page');
 
       page = page ? page : 0;
 
       this.clienteService.getClientes(page).pipe(
         tap(result => {
-          this.clientes = result.content;
           console.log('ClienteService: tap 3');
           (result.content as Cliente[]).forEach(cliente => {
             console.log(cliente.apellido);
           });
         })
-      ).subscribe();
+      ).subscribe(resp => {
+        this.clientes = resp.content;
+        this.paginador = resp;
+      });
 
     });
 
