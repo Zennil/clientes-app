@@ -124,12 +124,33 @@ export class ClienteService {
 
   delete(id: number): Observable<Cliente> {
     return this.http.delete(`${this.urlEndPoint}/${id}`, { headers: this.httpHeaders }).pipe(
+
       map((response: any) => response.cliente),
+
       catchError(e => {
         console.log(e.error.error);
         Swal.fire(e.error.mensaje, e.error.error, 'error');
         return throwError(e);
       })
+
+    );
+  }
+
+  subirFoto(archivo: File, id: string): Observable<Cliente> {
+
+    const formData = new FormData();
+    formData.append('file', archivo);
+    formData.append('id', id);
+
+    return this.http.post(`${this.urlEndPoint}/upload`, formData).pipe(
+
+      map((respuesta: any) => respuesta.cliente as Cliente),
+
+      catchError(e => {
+        console.log(e.error.mensaje);
+        return throwError(e);
+      })
+
     );
   }
 
