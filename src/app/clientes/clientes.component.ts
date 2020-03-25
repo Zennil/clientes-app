@@ -13,6 +13,8 @@ export class ClientesComponent implements OnInit {
 
   clientes: Cliente[];
   paginador: any;
+  clienteSelected: Cliente;
+
   constructor(private clienteService: ClienteService, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -64,6 +66,10 @@ export class ClientesComponent implements OnInit {
         });
       }
     });
-
   }
+
+  abrirModal(cliente: Cliente) {
+    this.clienteSelected = cliente;
+  }
+
 }

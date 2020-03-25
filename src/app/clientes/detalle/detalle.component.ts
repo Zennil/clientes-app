@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ClienteService } from '../cliente.service';
 import { Cliente } from '../cliente';
 import { ActivatedRoute } from '@angular/router';
@@ -12,8 +12,9 @@ import { HttpEventType } from '@angular/common/http';
 })
 export class DetalleComponent implements OnInit {
 
+  @Input() cliente: Cliente;
+
   titulo = 'Detalle del cliente';
-  cliente: Cliente;
 
   private imgSelected: File;
 
@@ -21,16 +22,7 @@ export class DetalleComponent implements OnInit {
 
   constructor(private clienteService: ClienteService, private route: ActivatedRoute) { }
 
-  ngOnInit() {
-    this.route.paramMap.subscribe(params => {
-      const id: number = +params.get('id');
-      if (id) {
-        this.clienteService.getCliente(id).subscribe(cliente => {
-          this.cliente = cliente;
-        });
-      }
-    });
-  }
+  ngOnInit() { }
 
   seleccionarFoto(event: any) {
     this.imgSelected = event.target.files[0];
