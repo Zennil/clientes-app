@@ -3,6 +3,7 @@ import { ClienteService } from '../cliente.service';
 import { Cliente } from '../cliente';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
+import { HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-detalle-cliente',
@@ -15,6 +16,8 @@ export class DetalleComponent implements OnInit {
   cliente: Cliente;
 
   private imgSelected: File;
+
+  progreso = 0;
 
   constructor(private clienteService: ClienteService, private route: ActivatedRoute) { }
 
@@ -31,6 +34,7 @@ export class DetalleComponent implements OnInit {
 
   seleccionarFoto(event: any) {
     this.imgSelected = event.target.files[0];
+    this.progreso = 0;
     console.log(this.imgSelected);
 
     if (this.imgSelected.type.indexOf('image') < 0) {
@@ -44,11 +48,17 @@ export class DetalleComponent implements OnInit {
     if (!this.imgSelected) {
       Swal.fire('Error', 'Debe seleccionar una foto', 'error');
     } else {
-      this.clienteService.subirFoto(this.imgSelected, this.cliente.id.toString()).subscribe(cliente => {
-        this.cliente = cliente;
-        Swal.fire('Listo!', `La foto se ha cargado exitosamente: ${cliente.foto}`, 'success');
-      }
-      );
+      this.clienteService.subirFoto(this.imgSelected, this.cliente.id.toString())
+        .subscribe(httpEvent => {
+          if (httpEvent.type === HttpEventType.UploadProgress) {
+            this.progreso = Math.round((httpEvent.loaded / httpEvent.total) * 100);
+          } else if (httpEvent.type === HttpEventType.Response) {
+            const response: any = httpEvent.body;
+            this.cliente = response.cliente as Cliente;
+            Swal.fire('Listo!', response.mensaje, 'success');
+          }
+        }
+        );
     }
   }
 }

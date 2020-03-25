@@ -13,7 +13,7 @@
                         <li class="list-group-item">{{cliente.createAt | date:"fullDate"}}</li>
                     </ul>
 
-                    <div class="input-group">
+                    <div class="input-group mb-3">
                         <div class="custom-file">
                             <input (change)="seleccionarFoto($event)" type="file" class="custom-file-input"
                                 id="inputGroupFile04">
@@ -22,15 +22,23 @@
                             </label>
                         </div>
                         <div class="input-group-append">
-                            <button (click)="subirFoto()" [disabled]="!imgSelected" class="btn btn-outline-secondary" type="button"
-                                id="inputGroupFileAddon04">Cargar</button>
+                            <button (click)="subirFoto()" [disabled]="!imgSelected" class="btn btn-outline-secondary"
+                                type="button" id="inputGroupFileAddon04">Cargar</button>
+                        </div>
+                    </div>
+
+                    <div *ngIf="progreso > 0" class="progress" style="height: 40px;">
+                        <div class="progress-bar progress-bar-striped bg-info" role="progressbar"
+                            [ngStyle]="{width:progreso+'%'}" attr.aria-valuenow="{{progreso}}" aria-valuemin="0"
+                            aria-valuemax="100">
+                            {{progreso}}%
                         </div>
                     </div>
                 </div>
 
                 <div class="col">
-                    <img *ngIf="cliente?.foto" src="http://localhost:8080/api/uploads/img/{{cliente.foto}}" alt="{{cliente.foto}}" 
-                    class="img-thumbnail rounded">
+                    <img *ngIf="cliente?.foto" src="http://localhost:8080/api/uploads/img/{{cliente.foto}}"
+                        alt="{{cliente.foto}}" class="img-thumbnail rounded">
                 </div>
             </div>
         </div>
