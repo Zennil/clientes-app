@@ -60,10 +60,20 @@
                 <label for="createAt" class="col-form-label col-sm-2">Fecha</label>
                 <div class="col-sm-6">
                     <!-- VALIDADORES: required -->
-                    <input type="date" class="form-control" [(ngModel)]="cliente.createAt" name="createAt">
+                    <!-- <input type="date" class="form-control" [(ngModel)]="cliente.createAt" name="createAt"> -->
+                    <div class="row">
+                        <div class="col pr-0">
+                            <input matInput [matDatepicker]="fecha" class="form-control" [(ngModel)]="cliente.createAt"
+                                name="createAt">
+                        </div>
+                        <div class="col-auto pl-0">
+                            <mat-datepicker-toggle [for]="fecha"></mat-datepicker-toggle>
+                            <mat-datepicker #fecha></mat-datepicker>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
+
             <div class="form-gorup row">
                 <div class="col-sm-6">
                     <button class="btn btn-primary" role="button" (click)="create()" *ngIf="!cliente.id else elseBlock"
