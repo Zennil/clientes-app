@@ -22,7 +22,7 @@
                             </label>
                         </div>
                         <div class="input-group-append">
-                            <button (click)="subirFoto()" class="btn btn-outline-secondary" type="button"
+                            <button (click)="subirFoto()" [disabled]="!imgSelected" class="btn btn-outline-secondary" type="button"
                                 id="inputGroupFileAddon04">Cargar</button>
                         </div>
                     </div>
