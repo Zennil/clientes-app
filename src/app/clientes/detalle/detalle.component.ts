@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 })
 export class DetalleComponent implements OnInit {
 
-  titulo: 'Detalle del cliente';
+  titulo = 'Detalle del cliente';
   cliente: Cliente;
 
   private imgSelected: File;
