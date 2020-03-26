@@ -22,6 +22,7 @@ import localeES from '@angular/common/locales/es-MX';
 import { PaginatorComponent } from './paginator/paginator.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DetalleComponent } from './clientes/detalle/detalle.component';
+import { ModalService } from './clientes/detalle/modal.service';
 registerLocaleData(localeES, 'es');
 
 const routes: Routes = [
@@ -57,6 +58,7 @@ const routes: Routes = [
   ],
   providers: [
     ClienteService,
+    ModalService,
     {
       provide: LOCALE_ID,
       useValue: 'es-MX'
