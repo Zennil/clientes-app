@@ -48,6 +48,7 @@ export class DetalleComponent implements OnInit {
           } else if (httpEvent.type === HttpEventType.Response) {
             const response: any = httpEvent.body;
             this.cliente = response.cliente as Cliente;
+            this.modalService.notificaUpload.emit(this.cliente);
             Swal.fire('Listo!', response.mensaje, 'success');
           }
         }
