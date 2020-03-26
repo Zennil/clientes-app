@@ -59,4 +59,8 @@ export class FormComponent implements OnInit {
       });
   }
 
+  compararRegion(obj1: Region, obj2: Region): boolean {
+    return !obj1 || !obj2 ? false : obj1.id === obj2.id;
+  }
+
 }
