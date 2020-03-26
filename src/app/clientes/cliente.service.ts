@@ -6,6 +6,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders, HttpRequest, HttpEvent } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { Region } from './region';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,10 @@ export class ClienteService {
   private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient, private router: Router) { }
+
+  getRegiones(): Observable<Region[]> {
+    return this.http.get<Region[]>(`${this.urlEndPoint}/regiones`);
+  }
 
   getClientes2(): Observable<Cliente[]> {
     return this.http.get(this.urlEndPoint).pipe(
