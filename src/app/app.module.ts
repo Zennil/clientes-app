@@ -24,6 +24,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DetalleComponent } from './clientes/detalle/detalle.component';
 import { ModalService } from './clientes/detalle/modal.service';
 import { LoginComponent } from './usuarios/login.component';
+import { AuthService } from './usuarios/auth.service';
 registerLocaleData(localeES, 'es');
 
 const routes: Routes = [
@@ -62,6 +63,7 @@ const routes: Routes = [
   providers: [
     ClienteService,
     ModalService,
+    AuthService,
     {
       provide: LOCALE_ID,
       useValue: 'es-MX'
