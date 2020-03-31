@@ -29,7 +29,7 @@ export class ClientesComponent implements OnInit {
         tap(result => {
           console.log('ClienteService: tap 3');
           (result.content as Cliente[]).forEach(cliente => {
-            console.log(cliente.apellido);
+            // console.log(cliente.apellido);
           });
         })
       ).subscribe(resp => {
