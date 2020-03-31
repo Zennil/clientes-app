@@ -19,8 +19,21 @@ export class ClienteService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
+  private isNoAuthorized(e: any): boolean {
+    if (e.status === 401 || e.status === 403) {
+      this.router.navigate(['/login']);
+      return true;
+    }
+    return false;
+  }
+
   getRegiones(): Observable<Region[]> {
-    return this.http.get<Region[]>(`${this.urlEndPoint}/regiones`);
+    return this.http.get<Region[]>(`${this.urlEndPoint}/regiones`).pipe(
+      catchError(e => {
+        this.isNoAuthorized(e);
+        return throwError(e);
+      })
+    );
   }
 
   getClientes2(): Observable<Cliente[]> {
@@ -90,7 +103,7 @@ export class ClienteService {
       map((respuesta: any) => respuesta.cliente as Cliente),
       catchError(e => {
 
-        if (e.status === 400) {
+        if (e.status === 400 || this.isNoAuthorized(e)) {
           return throwError(e);
         }
 
@@ -104,6 +117,9 @@ export class ClienteService {
   getCliente(id: number): Observable<Cliente> {
     return this.http.get<Cliente>(`${this.urlEndPoint}/${id}`).pipe(
       catchError(e => {
+        if (this.isNoAuthorized(e)) {
+          return throwError(e);
+        }
         this.router.navigate(['/clientes']);
         Swal.fire('Error al intentar obtener el cliente.', e.error.mensaje, 'error');
         return throwError(e);
@@ -116,7 +132,7 @@ export class ClienteService {
       map((response: any) => response.cliente),
       catchError(e => {
 
-        if (e.status === 400) {
+        if (e.status === 400 || this.isNoAuthorized(e)) {
           return throwError(e);
         }
 
@@ -133,6 +149,11 @@ export class ClienteService {
       map((response: any) => response.cliente),
 
       catchError(e => {
+
+        if (this.isNoAuthorized(e)) {
+          return throwError(e);
+        }
+
         console.log(e.error.error);
         Swal.fire(e.error.mensaje, e.error.error, 'error');
         return throwError(e);
@@ -151,7 +172,12 @@ export class ClienteService {
       reportProgress: true
     });
 
-    return this.http.request(req);
+    return this.http.request(req).pipe(
+      catchError(e => {
+        this.isNoAuthorized(e);
+        return throwError(e);
+      })
+    );
     // .pipe(
 
     //   map((respuesta: any) => respuesta.cliente as Cliente),
