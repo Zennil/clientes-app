@@ -25,6 +25,7 @@ import { DetalleComponent } from './clientes/detalle/detalle.component';
 import { ModalService } from './clientes/detalle/modal.service';
 import { LoginComponent } from './usuarios/login.component';
 import { AuthService } from './usuarios/auth.service';
+import { AuthGuard } from './usuarios/guards/auth.guard';
 registerLocaleData(localeES, 'es');
 
 const routes: Routes = [
@@ -32,8 +33,8 @@ const routes: Routes = [
   { path: 'directivas', component: DirectivaComponent },
   { path: 'clientes', component: ClientesComponent },
   { path: 'clientes/page/:page', component: ClientesComponent },
-  { path: 'clientes/form', component: FormComponent },
-  { path: 'clientes/form/:id', component: FormComponent },
+  { path: 'clientes/form', component: FormComponent, canActivate: [AuthGuard] },
+  { path: 'clientes/form/:id', component: FormComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent }
 ];
 
