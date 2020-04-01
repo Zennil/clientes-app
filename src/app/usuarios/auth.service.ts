@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Usuario } from './usuario';
-import { URLSearchParams } from 'url';
 
 @Injectable({
   providedIn: 'root'
@@ -18,13 +17,14 @@ export class AuthService {
 
     const httpHeaders = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': 'Basic ' + credenciales
+      Authorization: 'Basic ' + credenciales
     });
 
-    const params = new URLSearchParams();
-    params.set('grant_type', 'password');
-    params.set('username', usuario.username);
-    params.set('password', usuario.password);
+    let params = new HttpParams();
+
+    params = params.append('username', usuario.username);
+    params = params.append('password', usuario.password);
+    params = params.append('grant_type', 'password');
 
     return this.httpClient.post<any>(`${urlEndPoint}`, params, { headers: httpHeaders });
   }
