@@ -74,7 +74,7 @@ export class AuthService {
     sessionStorage.setItem('token', accesToken);
   }
 
-  private getDataPayload(accessToken: string): any {
+  getDataPayload(accessToken: string): any {
 
     if (accessToken) {
       return JSON.parse(atob(accessToken.split('.')[1]));

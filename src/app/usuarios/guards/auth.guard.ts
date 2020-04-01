@@ -16,11 +16,25 @@ export class AuthGuard implements CanActivate {
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     if (this.authService.isAuthenticated()) {
-
-      return true;
+      if (this.isTokenExpired()) {
+        this.authService.logout();
+        this.router.navigate(['/clientes']);
+        return true;
+      }
     }
     this.router.navigate(['/login']);
     return false;
   }
 
+  isTokenExpired(): boolean {
+    const token = this.authService.token;
+    const payload = this.authService.getDataPayload(token);
+
+    const now = new Date().getTime() / 1000;
+
+    if (payload.exp < now) {
+      return true;
+    }
+    return false;
+  }
 }
