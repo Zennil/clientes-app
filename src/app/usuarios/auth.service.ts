@@ -94,4 +94,14 @@ export class AuthService {
     return false;
 
   }
+
+  logout(): void {
+    this._token = null;
+    this._usuario = null;
+    sessionStorage.clear();
+
+    // por si no se quiere eliminar todos los datos del sessionStorage
+    // sessionStorage.removeItem('usuario');
+    // sessionStorage.removeItem('token');
+  }
 }
