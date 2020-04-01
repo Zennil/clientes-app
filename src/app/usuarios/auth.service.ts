@@ -82,4 +82,16 @@ export class AuthService {
       return null;
     }
   }
+
+  isAuthenticated(): boolean {
+
+    const payload = this.getDataPayload(this.token);
+
+    if (payload && payload.user_name && payload.user_name.length > 0) {
+      return true;
+    }
+
+    return false;
+
+  }
 }
