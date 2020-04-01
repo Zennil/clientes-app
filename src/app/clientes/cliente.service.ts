@@ -29,8 +29,13 @@ export class ClienteService {
   }
 
   private isNoAuthorized(e: any): boolean {
-    if (e.status === 401 || e.status === 403) {
+    if (e.status === 401) {
       this.router.navigate(['/login']);
+      return true;
+    }
+    if (e.status === 403) {
+      Swal.fire('Acceso denegado', `Hola ${this.authService.usuario.username} no tienes acceso a este recurso`, 'warning');
+      this.router.navigate(['/clientes']);
       return true;
     }
     return false;
@@ -182,7 +187,7 @@ export class ClienteService {
     // let httpHeaders = new HttpHeaders();
     const token = this.authService.token;
 
-    const httpHeaders = token ? new HttpHeaders({Authorization: 'Bearer ' + token}) :  new HttpHeaders();
+    const httpHeaders = token ? new HttpHeaders({ Authorization: 'Bearer ' + token }) : new HttpHeaders();
 
     // if (token) {
     //   httpHeaders = httpHeaders.append('Authorization', 'Bearer ' + token);
