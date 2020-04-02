@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Cliente } from './cliente';
-import { formatDate, DatePipe } from '@angular/common';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { HttpClient, HttpHeaders, HttpRequest, HttpEvent } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { Region } from './region';
-import { AuthService } from '../usuarios/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,33 +14,10 @@ export class ClienteService {
 
   private urlEndPoint = 'http://localhost:8080/api/clientes';
 
-  constructor(private http: HttpClient, private router: Router, private authService: AuthService) { }
-
-  private isNoAuthorized(e: any): boolean {
-    if (e.status === 401) {
-
-      if (this.authService.isAuthenticated()) {
-        this.authService.logout();
-      }
-
-      this.router.navigate(['/login']);
-      return true;
-    }
-    if (e.status === 403) {
-      Swal.fire('Acceso denegado', `Hola ${this.authService.usuario.username} no tienes acceso a este recurso`, 'warning');
-      this.router.navigate(['/clientes']);
-      return true;
-    }
-    return false;
-  }
+  constructor(private http: HttpClient, private router: Router) { }
 
   getRegiones(): Observable<Region[]> {
-    return this.http.get<Region[]>(`${this.urlEndPoint}/regiones`).pipe(
-      catchError(e => {
-        this.isNoAuthorized(e);
-        return throwError(e);
-      })
-    );
+    return this.http.get<Region[]>(`${this.urlEndPoint}/regiones`);
   }
 
   getClientes2(): Observable<Cliente[]> {
@@ -114,7 +89,7 @@ export class ClienteService {
       map((respuesta: any) => respuesta.cliente as Cliente),
       catchError(e => {
 
-        if (e.status === 400 || this.isNoAuthorized(e)) {
+        if (e.status === 400) {
           return throwError(e);
         }
 
@@ -128,11 +103,10 @@ export class ClienteService {
   getCliente(id: number): Observable<Cliente> {
     return this.http.get<Cliente>(`${this.urlEndPoint}/${id}`).pipe(
       catchError(e => {
-        if (this.isNoAuthorized(e)) {
-          return throwError(e);
+        if (e.status === 401) {
+          this.router.navigate(['/clientes']);
+          Swal.fire('Error al intentar obtener el cliente.', e.error.mensaje, 'error');
         }
-        this.router.navigate(['/clientes']);
-        Swal.fire('Error al intentar obtener el cliente.', e.error.mensaje, 'error');
         return throwError(e);
       })
     );
@@ -143,7 +117,7 @@ export class ClienteService {
       map((response: any) => response.cliente),
       catchError(e => {
 
-        if (e.status === 400 || this.isNoAuthorized(e)) {
+        if (e.status === 400) {
           return throwError(e);
         }
 
@@ -160,10 +134,6 @@ export class ClienteService {
       map((response: any) => response.cliente),
 
       catchError(e => {
-
-        if (this.isNoAuthorized(e)) {
-          return throwError(e);
-        }
 
         console.log(e.error.error);
         Swal.fire(e.error.mensaje, e.error.error, 'error');
@@ -183,12 +153,7 @@ export class ClienteService {
       reportProgress: true
     });
 
-    return this.http.request(req).pipe(
-      catchError(e => {
-        this.isNoAuthorized(e);
-        return throwError(e);
-      })
-    );
+    return this.http.request(req);
     // .pipe(
 
     //   map((respuesta: any) => respuesta.cliente as Cliente),

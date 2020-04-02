@@ -21,7 +21,7 @@ export class RoleGuard implements CanActivate {
     }
 
     const role = next.data.role as string;
-    console.log(role);
+
     if (this.authService.hasRole(role)) {
       return true;
     }
